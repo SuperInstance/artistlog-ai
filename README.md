@@ -1,63 +1,111 @@
-# artistlog.ai
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Lucineer/capitaine/master/docs/capitaine-logo.jpg" alt="Capitaine" width="120">
+</p>
 
-Artist portfolio and creative process vessel. Built on Cloudflare Workers with a single-page gallery UI.
+<h1 align="center">artistlog-ai</h1>
 
-## Stack
+<p align="center">Creative companion for artists and designers.</p>
 
-- **Runtime:** Cloudflare Worker (TypeScript)
-- **Frontend:** Single HTML page — gallery white UI (#FAFAFA), black text, gold accent (#B8860B)
-- **AI Chat:** DeepSeek API via SSE streaming
+<p align="center">
+  <a href="#quick-start">Quick Start</a> ·
+  <a href="#features">Features</a> ·
+  <a href="#the-fleet">The Fleet</a> ·
+  <a href="https://github.com/Lucineer/artistlog-ai/issues">Issues</a>
+</p>
 
-## API Routes
+---
 
-| Method | Path | Description |
-|--------|------|-------------|
-| POST | `/api/chat` | Creative AI chat (SSE streaming via DeepSeek) |
-| GET/POST | `/api/artworks` | List or create artworks |
-| GET/POST | `/api/gallery` | List or create curated gallery collections |
-| GET/POST | `/api/studio/journal` | List or create journal entries |
-| GET/POST | `/api/exhibitions` | List or create exhibitions |
-| GET/POST | `/api/commissions` | List or create commissions |
+**Powered by [Capitaine](https://github.com/Lucineer/capitaine) · [Cocapn](https://github.com/Lucineer/cocapn)**
 
-### Query Parameters
+The repo IS the agent. artistlog-ai is a cocapn vessel — a self-improving repository that runs on Cloudflare Workers, thinks with LLMs, and coordinates with the fleet through git.
 
-- `GET /api/artworks?status=available&tag=abstract&q=search`
-- `GET /api/studio/journal?mood=inspired&artworkId=abc`
-- `GET /api/exhibitions?status=current`
-- `GET /api/commissions?status=in_progress`
-
-## Domain Classes (`src/art/tracker.ts`)
-
-- **ArtworkPortfolio** — CRUD + search for artworks (title, medium, dimensions, image refs, price, status, tags)
-- **GalleryCurator** — Curated collections linking to artworks
-- **StudioJournal** — Creative process notes with mood tracking
-- **ExhibitionTracker** — Shows, galleries, dates with upcoming/current filters
-- **CommissionManager** — Client work tracking with progress, budget, deadline, notes
-
-## Setup
+## Quick Start
 
 ```bash
-npm install
-npx wrangler secret put DEEPSEEK_API_KEY
-npm run dev      # local dev server
-npm run deploy   # deploy to Cloudflare
+# Fork and deploy
+gh repo fork Lucineer/artistlog-ai --clone
+cd artistlog-ai
+npx wrangler login
+echo "your-github-token" | npx wrangler secret put GITHUB_TOKEN
+echo "your-llm-key" | npx wrangler secret put DEEPSEEK_API_KEY
+npx wrangler deploy
 ```
 
-## Project Structure
+That's it. The vessel is alive.
+
+## Features
+
+- **BYOK v2** — Zero keys in code. All API keys via Cloudflare Secrets Store.
+- **Multi-model** — DeepSeek, SiliconFlow, DeepInfra, Moonshot, z.ai, local models.
+- **Session memory** — Conversations persist and build context over time.
+- **PII safety** — Automatic detection and dehydration of sensitive data.
+- **Rate limiting** — Guest tokens per IP with configurable limits.
+- **Health checks** — Standard `/health` endpoint on all vessels.
+- **Fleet coordination** — CRP-39 protocol for trust, bonds, and events.
+
+## Architecture
+
+Single-file Cloudflare Worker. Zero runtime dependencies. Inline HTML serving.
 
 ```
 src/
-  worker.ts          # Cloudflare Worker — all API routes
-  art/
-    tracker.ts       # Domain classes
-public/
-  app.html           # SPA — portfolio grid, journal, timeline, commissions, chat
+  worker.ts      # The hull — serves users, runs heartbeats
+lib/
+  byok.ts        # Multi-model routing (BYOK v2)
+  ...
 ```
 
-## Author
+## The Fleet
 
-Superinstance
+artistlog-ai is one of 40+ autonomous vessels in the Lucineer fleet. Each vessel is a different domain of one intelligence.
+
+
+<details>
+<summary><strong>⚓ The Fleet</strong></summary>
+
+**Flagship vessels**
+
+- [cocapn.ai](https://github.com/Lucineer/capitaine)
+- [personallog.ai](https://github.com/Lucineer/personallog-ai)
+- [businesslog.ai](https://github.com/Lucineer/businesslog-ai)
+- [studylog.ai](https://github.com/Lucineer/studylog-ai)
+- [makerlog.ai](https://github.com/Lucineer/makerlog-ai)
+- [playerlog.ai](https://github.com/Lucineer/playerlog-ai)
+- [dmlog.ai](https://github.com/Lucineer/dmlog-ai)
+- [reallog.ai](https://github.com/Lucineer/reallog-ai)
+- [deckboss.ai](https://github.com/Lucineer/deckboss-ai)
+
+**Fleet services**
+
+- [Fleet Catalog](https://github.com/Lucineer/capitaine/blob/master/docs/fleet/FLEET.md)
+- [Git Agent (full)](https://github.com/Lucineer/git-agent)
+- [Cocapn Lite (minimal)](https://github.com/Lucineer/cocapn-lite)
+- [Fleet Orchestrator](https://github.com/Lucineer/fleet-orchestrator)
+- [Dead Reckoning Engine](https://github.com/Lucineer/dead-reckoning-engine)
+- [Dream Engine](https://github.com/Lucineer/dream-engine)
+- [Seed UI (5 layers)](https://github.com/Lucineer/seed-ui)
+
+**For power users**
+
+- [Cocapn Lite (tabula rasa)](https://github.com/Lucineer/cocapn-lite)
+- [Cocapn (core platform)](https://github.com/Lucineer/cocapn)
+- [ZeroClaw (framework)](https://github.com/Lucineer/zeroclaw)
+
+[View all 106 repos →](https://github.com/orgs/Lucineer/repositories)
+[Fleet manifest →](https://github.com/Lucineer/capitaine/blob/master/docs/fleet/FLEET.md)
+
+</details>
+
+
+## Philosophy
+
+> The repo is the agent. The agent is the repo. Intelligence crystallizes from fluid (LLM calls) to solid (code). The vessel becomes faster and cheaper as it becomes smarter.
+
+- **Fork-first** — Power users fork and customize. Casual users visit the domain.
+- **Pay-for-convenience** — We save you costs through bulk inference, not markups.
+- **Git as coordination** — Agents compete via PRs, not chat.
+- **Soft actualization** — Vessels evolve gently based on usage, not hard updates.
 
 ## License
 
-MIT — Built with ❤️ by [Superinstance](https://github.com/superinstance) & [Lucineer](https://github.com/Lucineer) (DiGennaro et al.)
+MIT · Superinstance & Lucineer (DiGennaro et al.)
