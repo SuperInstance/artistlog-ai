@@ -4,25 +4,39 @@
 
 <h1 align="center">artistlog-ai</h1>
 
-<p align="center">Creative companion for artists and designers.</p>
-
+<p align="center">A persistent creative log for artists.</p>
 <p align="center">
+  <a href="https://artistlog-ai.casey-digennaro.workers.dev">Live Demo</a> ·
   <a href="#quick-start">Quick Start</a> ·
   <a href="#features">Features</a> ·
-  <a href="#the-fleet">The Fleet</a> ·
-  <a href="https://github.com/Lucineer/artistlog-ai/issues">Issues</a>
+  <a href="#the-fleet">The Fleet</a>
 </p>
 
 ---
 
-**Powered by [Capitaine](https://github.com/Lucineer/capitaine) · [Cocapn](https://github.com/Lucineer/cocapn)**
+artistlog-ai is an agent that learns from your project's commit history to provide context-aware feedback. It's designed to persist across your creative sessions without requiring you to re-explain your work.
 
-The repo IS the agent. artistlog-ai is a cocapn vessel — a self-improving repository that runs on Cloudflare Workers, thinks with LLMs, and coordinates with the fleet through git.
+Built on [Capitaine](https://github.com/Lucineer/capitaine) and deployed as a single-file Cloudflare Worker.
+
+## Why this exists
+
+Most AI creative tools are designed for quick generation, not long-term collaboration. This tool is built to accompany the iterative, non-linear process of making art—remembering your project's history so you can focus on the next iteration.
+
+## What makes this different
+
+This is a self-deployed agent:
+- You deploy and control it. No third-party service can change or remove it.
+- It reads from your Git repository to understand your project's context.
+- Your data and conversations stay in your deployment.
+- It uses Cloudflare Workers, which remain free for typical usage.
+
+**Limitation:** It requires your project to be in a Git repository and for you to provide API keys for the LLM.
 
 ## Quick Start
 
+Fork this repository and deploy it to Cloudflare Workers:
+
 ```bash
-# Fork and deploy
 gh repo fork Lucineer/artistlog-ai --clone
 cd artistlog-ai
 npx wrangler login
@@ -31,81 +45,29 @@ echo "your-llm-key" | npx wrangler secret put DEEPSEEK_API_KEY
 npx wrangler deploy
 ```
 
-That's it. The vessel is alive.
+Your agent will be live at your Worker's URL.
 
 ## Features
 
-- **BYOK v2** — Zero keys in code. All API keys via Cloudflare Secrets Store.
-- **Multi-model** — DeepSeek, SiliconFlow, DeepInfra, Moonshot, z.ai, local models.
-- **Session memory** — Conversations persist and build context over time.
-- **PII safety** — Automatic detection and dehydration of sensitive data.
-- **Rate limiting** — Guest tokens per IP with configurable limits.
-- **Health checks** — Standard `/health` endpoint on all vessels.
-- **Fleet coordination** — CRP-39 protocol for trust, bonds, and events.
+- **Context Memory:** Reads your Git commit history to understand project evolution.
+- **Multi-Model Support:** Works with DeepSeek, SiliconFlow, and other providers via BYOK v2.
+- **Self-Contained:** Single-file Worker with no external runtime dependencies.
+- **Privacy-Focused:** No data is used for training; sensitive data is automatically filtered.
 
 ## Architecture
 
-Single-file Cloudflare Worker. Zero runtime dependencies. Inline HTML serving.
-
-```
-src/
-  worker.ts      # The hull — serves users, runs heartbeats
-lib/
-  byok.ts        # Multi-model routing (BYOK v2)
-  ...
-```
+The entire application is a single Cloudflare Worker (`src/worker.ts`). It serves a frontend and handles agent logic, with separate modules for model routing and session management.
 
 ## The Fleet
 
-artistlog-ai is one of 40+ autonomous vessels in the Lucineer fleet. Each vessel is a different domain of one intelligence.
+artistlog-ai is part of the Cocapn Fleet, a collection of autonomous, interoperable agents. Each vessel is a standalone intelligence designed for a specific domain.
 
+<div align="center">
+  <p>
+    <a href="https://the-fleet.casey-digennaro.workers.dev">Explore The Fleet</a> · 
+    <a href="https://cocapn.ai">Learn About Cocapn</a>
+  </p>
+</div>
 
-<details>
-<summary><strong>⚓ The Fleet</strong></summary>
-
-**Flagship vessels**
-
-- [cocapn.ai](https://github.com/Lucineer/capitaine)
-- [personallog.ai](https://github.com/Lucineer/personallog-ai)
-- [businesslog.ai](https://github.com/Lucineer/businesslog-ai)
-- [studylog.ai](https://github.com/Lucineer/studylog-ai)
-- [makerlog.ai](https://github.com/Lucineer/makerlog-ai)
-- [playerlog.ai](https://github.com/Lucineer/playerlog-ai)
-- [dmlog.ai](https://github.com/Lucineer/dmlog-ai)
-- [reallog.ai](https://github.com/Lucineer/reallog-ai)
-- [deckboss.ai](https://github.com/Lucineer/deckboss-ai)
-
-**Fleet services**
-
-- [Fleet Catalog](https://github.com/Lucineer/capitaine/blob/master/docs/fleet/FLEET.md)
-- [Git Agent (full)](https://github.com/Lucineer/git-agent)
-- [Cocapn Lite (minimal)](https://github.com/Lucineer/cocapn-lite)
-- [Fleet Orchestrator](https://github.com/Lucineer/fleet-orchestrator)
-- [Dead Reckoning Engine](https://github.com/Lucineer/dead-reckoning-engine)
-- [Dream Engine](https://github.com/Lucineer/dream-engine)
-- [Seed UI (5 layers)](https://github.com/Lucineer/seed-ui)
-
-**For power users**
-
-- [Cocapn Lite (tabula rasa)](https://github.com/Lucineer/cocapn-lite)
-- [Cocapn (core platform)](https://github.com/Lucineer/cocapn)
-- [ZeroClaw (framework)](https://github.com/Lucineer/zeroclaw)
-
-[View all 106 repos →](https://github.com/orgs/Lucineer/repositories)
-[Fleet manifest →](https://github.com/Lucineer/capitaine/blob/master/docs/fleet/FLEET.md)
-
-</details>
-
-
-## Philosophy
-
-> The repo is the agent. The agent is the repo. Intelligence crystallizes from fluid (LLM calls) to solid (code). The vessel becomes faster and cheaper as it becomes smarter.
-
-- **Fork-first** — Power users fork and customize. Casual users visit the domain.
-- **Pay-for-convenience** — We save you costs through bulk inference, not markups.
-- **Git as coordination** — Agents compete via PRs, not chat.
-- **Soft actualization** — Vessels evolve gently based on usage, not hard updates.
-
-## License
-
-MIT · Superinstance & Lucineer (DiGennaro et al.)
+---
+Attribution: Superinstance & Lucineer (DiGennaro et al.) · MIT License · Cloudflare Workers
